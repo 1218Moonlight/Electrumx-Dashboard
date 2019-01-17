@@ -5,7 +5,7 @@ import (
 	_ "github.com/andlabs/ui/winmanifest"
 	"log"
 	"github.com/sparrc/go-ping"
-	"fmt"
+	"time"
 )
 
 type window struct {
@@ -57,23 +57,32 @@ func mainTab() ui.Control {
 
 	vbox.Append(ui.NewLabel("Hello, World!"), false)
 
-	c := make(chan ping.Statistics)
-	go serverPing(c)
-	n := <- c
-	vbox.Append(ui.NewLabel(fmt.Sprintln(n)), false)
+	textBox := ui.NewMultilineEntry()
+	textBox.SetReadOnly(true)
+
+	go serverPing(textBox)
+
+	vbox.Append(textBox, true)
 
 	return vbox
 }
 
-func serverPing(c chan ping.Statistics) {
-	pinger, err := ping.NewPinger("URL")
-	pinger.SetPrivileged(true)
-	if err != nil {
-		panic(err)
+func serverPing(textBox *ui.MultilineEntry) {
+	for {
+		pinger, err := ping.NewPinger("URL")
+		pinger.SetPrivileged(true)
+		if err != nil {
+			panic(err)
+		}
+		pinger.Timeout = time.Duration(time.Second * 2)
+		pinger.Count = 1
+		pinger.Run()
+		stats := pinger.Statistics()
+		if len(stats.Rtts) == 0 {
+			textBox.SetText("Server false")
+		} else {
+			textBox.SetText("Server true")
+		}
+		time.Sleep(time.Second * 3)
 	}
-
-	pinger.Count = 3
-	pinger.Run()                 // blocks until finished
-	stats := pinger.Statistics() // get send/receive/rtt stats
-	c <- *stats
 }
