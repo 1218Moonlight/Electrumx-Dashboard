@@ -51,25 +51,49 @@ func GUI() {
 	win.main.Show()
 }
 
+var pingBool bool = false
+
 func mainTab() ui.Control {
 	vbox := ui.NewVerticalBox()
 	vbox.SetPadded(true)
 
-	vbox.Append(ui.NewLabel("Hello, World!"), false)
+	hbox := ui.NewHorizontalBox()
+	hbox.SetPadded(true)
+	vbox.Append(hbox, false)
 
-	textBox := ui.NewMultilineEntry()
-	textBox.SetReadOnly(true)
+	ipText := ui.NewEntry()
+	ipBtn := ui.NewButton("Connet")
+	hbox.Append(ipText, true)
+	hbox.Append(ipBtn, false)
 
-	go serverPing(textBox)
+	vbox.Append(ui.NewHorizontalSeparator(), false)
 
-	vbox.Append(textBox, true)
+	pingStatus := ui.NewEntry()
+	pingStatus.SetReadOnly(true)
+	vbox.Append(pingStatus, true)
+
+	ipBtn.OnClicked(func(button *ui.Button) {
+		if !pingBool {
+			go serverPing(ipText.Text(), pingStatus)
+			ipBtn.SetText("Close")
+			pingBool = true
+		} else {
+			ipBtn.SetText("Connet")
+			pingBool = false
+		}
+	})
 
 	return vbox
 }
 
-func serverPing(textBox *ui.MultilineEntry) {
+func serverPing(ip string, status *ui.Entry) {
+	log.Println("Start Ping", ip)
 	for {
-		pinger, err := ping.NewPinger("URL")
+		if !pingBool{
+			status.SetText("")
+			break
+		}
+		pinger, err := ping.NewPinger(ip)
 		pinger.SetPrivileged(true)
 		if err != nil {
 			panic(err)
@@ -79,10 +103,11 @@ func serverPing(textBox *ui.MultilineEntry) {
 		pinger.Run()
 		stats := pinger.Statistics()
 		if len(stats.Rtts) == 0 {
-			textBox.SetText("Server false")
+			status.SetText("Server false")
 		} else {
-			textBox.SetText("Server true")
+			status.SetText("Server true")
 		}
 		time.Sleep(time.Second * 3)
 	}
+	log.Println("Stop Ping", ip)
 }
