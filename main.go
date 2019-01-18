@@ -46,14 +46,18 @@ func GUI() {
 	win.main.SetChild(tab)
 	win.main.SetMargined(true)
 
-	tab.Append("Server", mainTab())
+	tab.Append("Server", serverTab())
+	tab.SetMargined(0, true)
+
+	tab.Append("Electrumx", electrumxTab())
+	tab.SetMargined(1, true)
 
 	win.main.Show()
 }
 
 var pingBool bool = false
 
-func mainTab() ui.Control {
+func serverTab() ui.Control {
 	vbox := ui.NewVerticalBox()
 	vbox.SetPadded(true)
 
@@ -86,10 +90,32 @@ func mainTab() ui.Control {
 	return vbox
 }
 
+func electrumxTab() ui.Control {
+	vbox := ui.NewVerticalBox()
+	vbox.SetPadded(true)
+
+	status := ui.NewButton("getElectrumxInfo")
+	vbox.Append(status, false)
+
+	go electrumxInfo(status)
+
+	return vbox
+}
+
+func electrumxInfo(status *ui.Button) {
+	status.OnClicked(func(button *ui.Button) {
+		if pingBool {
+			status.SetText("pingBool true")
+		} else {
+			status.SetText("pingBool false")
+		}
+	})
+}
+
 func serverPing(ip string, status *ui.Entry) {
 	log.Println("Start Ping", ip)
 	for {
-		if !pingBool{
+		if !pingBool {
 			status.SetText("")
 			break
 		}
