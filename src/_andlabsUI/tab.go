@@ -27,18 +27,25 @@ func serverTab() ui.Control {
 
 	hbox := ui.NewHorizontalBox()
 	hbox.SetPadded(true)
-	vbox.Append(hbox, false)
 
 	ipText := ui.NewEntry()
 	ipBtn := ui.NewButton("Connet")
 	hbox.Append(ipText, true)
 	hbox.Append(ipBtn, false)
 
+	inputGroup := ui.NewGroup("Input")
+	inputGroup.SetMargined(true)
+	inputGroup.SetChild(hbox)
+	vbox.Append(inputGroup, false)
+
 	vbox.Append(ui.NewHorizontalSeparator(), false)
 
-	pingStatus := ui.NewEntry()
-	pingStatus.SetReadOnly(true)
-	vbox.Append(pingStatus, true)
+	pingStatus := ui.NewLabel("")
+
+	pingGroup := ui.NewGroup("ping")
+	pingGroup.SetMargined(true)
+	pingGroup.SetChild(pingStatus)
+	vbox.Append(pingGroup, false)
 
 	ipBtn.OnClicked(func(button *ui.Button) {
 		if !pingBool {
@@ -48,6 +55,7 @@ func serverTab() ui.Control {
 		} else {
 			ipBtn.SetText("Connet")
 			pingBool = false
+			pingExit <- 0
 		}
 	})
 
@@ -62,7 +70,18 @@ func electrumxTab() ui.Control {
 	status := ui.NewButton("getElectrumxInfo")
 	vbox.Append(status, false)
 
-	go electrumxInfo(status)
+	elexGroup := ui.NewGroup("getInfo")
+	elexGroup.SetMargined(true)
+
+	groupVbox := ui.NewVerticalBox()
+	groupVbox.SetPadded(true)
+	elexGroup.SetChild(groupVbox)
+	vbox.Append(elexGroup, true)
+
+	elexStatus := ui.NewLabel("")
+	groupVbox.Append(elexStatus, true)
+
+	go electrumxInfo(status, elexStatus)
 
 	return vbox
 }
