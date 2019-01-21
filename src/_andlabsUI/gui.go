@@ -3,23 +3,22 @@ package _andlabsUI
 import (
 	"github.com/andlabs/ui"
 	_ "github.com/andlabs/ui/winmanifest"
-	"_Log"
 )
 
 func gui() {
-	_Log.Write("Setting window GUI")
+	boardLog.write("Setting window GUI")
 	win := newWindow()
 
 	win.main = ui.NewWindow(win.title, win.width, win.height, win.hasMenubar)
 
 	win.main.OnClosing(func(window *ui.Window) bool {
 		ui.Quit()
-		_Log.Write("OnClosing")
+		boardLog.write("OnClosing")
 		return true
 	})
 	ui.OnShouldQuit(func() bool {
 		win.main.Destroy()
-		_Log.Write("OnShouldQuit")
+		boardLog.write("OnShouldQuit")
 		return true
 	})
 
@@ -36,6 +35,6 @@ func gui() {
 	tab.Append("Log", logTab())
 	tab.SetMargined(2, true)
 
-	_Log.Write("Start window show")
+	boardLog.write("Start window show")
 	win.main.Show()
 }

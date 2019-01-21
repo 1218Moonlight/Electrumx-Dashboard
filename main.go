@@ -6,5 +6,4 @@ import (
 
 func main() {
 	_andlabsUI.Start()
-	_andlabsUI.Exit()
 }

@@ -2,11 +2,10 @@ package _andlabsUI
 
 import (
 	"github.com/andlabs/ui"
-	"_Log"
 )
 
 func logTab() ui.Control {
-	_Log.Write("Setting logTab")
+	boardLog.write("Setting logTab")
 	vbox := ui.NewVerticalBox()
 	vbox.SetPadded(true)
 
@@ -14,14 +13,11 @@ func logTab() ui.Control {
 	status.SetReadOnly(true)
 	vbox.Append(status, true)
 
-
-	go _Log.Handler(status)
-
 	return vbox
 }
 
 func serverTab() ui.Control {
-	_Log.Write("Setting serverTab")
+	boardLog.write("Setting serverTab")
 	vbox := ui.NewVerticalBox()
 	vbox.SetPadded(true)
 
@@ -63,7 +59,7 @@ func serverTab() ui.Control {
 }
 
 func electrumxTab() ui.Control {
-	_Log.Write("Setting electrumxTab")
+	boardLog.write("Setting electrumxTab")
 	vbox := ui.NewVerticalBox()
 	vbox.SetPadded(true)
 
