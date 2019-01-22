@@ -45,13 +45,13 @@ func serverTab() ui.Control {
 
 	ipBtn.OnClicked(func(button *ui.Button) {
 		if !pingBool {
-			go serverPing(ipText.Text(), pingStatus)
+			//go serverPing(ipText.Text(), pingStatus)
 			ipBtn.SetText("Close")
 			pingBool = true
 		} else {
 			ipBtn.SetText("Connet")
 			pingBool = false
-			pingExit <- 0
+			//pingExit <- 0
 		}
 	})
 
@@ -77,7 +77,7 @@ func electrumxTab() ui.Control {
 	elexStatus := ui.NewLabel("")
 	groupVbox.Append(elexStatus, true)
 
-	go electrumxInfo(status, elexStatus)
+	//go electrumxInfo(status, elexStatus)
 
 	return vbox
 }
