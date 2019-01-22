@@ -2,6 +2,7 @@ package _andlabsUI
 
 import (
 	"github.com/andlabs/ui"
+	"time"
 )
 
 func logTab() ui.Control {
@@ -43,15 +44,27 @@ func serverTab() ui.Control {
 	pingGroup.SetChild(pingStatus)
 	vbox.Append(pingGroup, false)
 
+	var pingU = pingUtil{"", pingStatus, pingMutex, 1}
 	ipBtn.OnClicked(func(button *ui.Button) {
+		pingU.url = ipText.Text()
 		if !pingBool {
-			//go serverPing(ipText.Text(), pingStatus)
+			go func() {
+				for {
+					if pingU.exit == 0 {
+						pingU.laber.SetText("")
+						pingU.exit = 1
+						break
+					}
+					pingChan <- pingU
+					time.Sleep(time.Second * 3)
+				}
+			}()
 			ipBtn.SetText("Close")
 			pingBool = true
 		} else {
+			pingU.exit = 0
 			ipBtn.SetText("Connet")
 			pingBool = false
-			//pingExit <- 0
 		}
 	})
 

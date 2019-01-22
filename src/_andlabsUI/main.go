@@ -9,6 +9,10 @@ func Start() {
 	logFile := initLogger()
 	defer logFile.Close()
 
+	boardLog.write("Starting to chan")
+
+	go chanHandler()
+
 	boardLog.write("Starting to set andlabsUI")
 
 	ui.Main(gui)
