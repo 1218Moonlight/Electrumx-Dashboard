@@ -1,25 +1,12 @@
 package _andlabsUI
 
 import (
-	"github.com/andlabs/ui"
 	"github.com/sparrc/go-ping"
 	"time"
 	"log"
 )
 
 var pingBool bool = false
-
-func electrumxInfo(status *ui.Button, elexStatus *ui.Label) {
-	status.OnClicked(func(button *ui.Button) {
-		if pingBool {
-			status.SetText("pingBool true")
-			elexStatus.SetText(Getinfo())
-		} else {
-			status.SetText("pingBool false")
-			elexStatus.SetText("")
-		}
-	})
-}
 
 func serverPing(pingU pingUtil) {
 	pinger, err := ping.NewPinger(pingU.url)

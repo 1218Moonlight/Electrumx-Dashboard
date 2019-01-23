@@ -16,7 +16,7 @@ type elexGetinfo struct {
 	Paused        int    `json:"paused"`
 }
 
-func Getinfo() string {
+func Getinfo() []byte {
 	jsonGetinfo, err := json.Marshal(elexGetinfo{
 		Closing:       1,
 		Daemon:        "192.168.0.2:8332/",
@@ -30,5 +30,5 @@ func Getinfo() string {
 	if err != nil {
 		log.Println(err)
 	}
-	return string(jsonGetinfo)
+	return jsonGetinfo
 }
