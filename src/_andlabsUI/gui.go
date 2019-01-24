@@ -29,9 +29,6 @@ func gui() {
 	tab.Append("Server", serverTab())
 	tab.SetMargined(0, true)
 
-	tab.Append("Electrumx", electrumxTab())
-	tab.SetMargined(1, true)
-	//
 	//tab.Append("Log", logTab())
 	//tab.SetMargined(2, true)
 
