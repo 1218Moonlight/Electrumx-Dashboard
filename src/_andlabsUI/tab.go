@@ -21,42 +21,76 @@ func logTab() ui.Control {
 
 func serverTab() ui.Control {
 	boardLog.write("Setting serverTab")
-	vbox := ui.NewVerticalBox()
-	vbox.SetPadded(true)
+	topVerticalBox := ui.NewVerticalBox()
+	topVerticalBox.SetPadded(true)
 
-	hbox := ui.NewHorizontalBox()
-	hbox.SetPadded(true)
+	inputHorizontalBox := ui.NewHorizontalBox()
+	inputHorizontalBox.SetPadded(true)
 
 	ipText := ui.NewEntry()
 	ipBtn := ui.NewButton("Connet")
-	hbox.Append(ipText, true)
-	hbox.Append(ipBtn, false)
+	inputHorizontalBox.Append(ipText, true)
+	inputHorizontalBox.Append(ipBtn, false)
 
 	inputGroup := ui.NewGroup("Input")
 	inputGroup.SetMargined(true)
-	inputGroup.SetChild(hbox)
-	vbox.Append(inputGroup, false)
+	inputGroup.SetChild(inputHorizontalBox)
+	topVerticalBox.Append(inputGroup, false)
 
-	vbox.Append(ui.NewHorizontalSeparator(), false)
+	///
+
+	topVerticalBox.Append(ui.NewHorizontalSeparator(), false)
+
+	///
 
 	pingStatus := ui.NewLabel("")
 
 	pingGroup := ui.NewGroup("ping")
 	pingGroup.SetMargined(true)
 	pingGroup.SetChild(pingStatus)
-	vbox.Append(pingGroup, false)
+	topVerticalBox.Append(pingGroup, false)
 
-	daemonGroup := ui.NewGroup("daemon_height")
-	daemonGroup.SetMargined(true)
+	///
+
+	getInfoVerticalBox := ui.NewVerticalBox()
+	getInfoVerticalBox.SetPadded(true)
+	getInfoHorizontalBox := ui.NewHorizontalBox()
+	getInfoHorizontalBox.SetPadded(true)
+	getInfoHorizontalBox1 := ui.NewHorizontalBox()
+	getInfoHorizontalBox1.SetPadded(true)
+	getInfoHorizontalBox2 := ui.NewHorizontalBox()
+	getInfoHorizontalBox2.SetPadded(true)
+	getInfoHorizontalBox3 := ui.NewHorizontalBox()
+	getInfoHorizontalBox3.SetPadded(true)
+	getInfoVerticalBox.Append(getInfoHorizontalBox, true)
+	getInfoVerticalBox.Append(getInfoHorizontalBox1, true)
+	getInfoVerticalBox.Append(getInfoHorizontalBox2, true)
+	getInfoVerticalBox.Append(getInfoHorizontalBox3, true)
+
+	closing := ui.NewLabel("...")
+	daemon := ui.NewLabel("...")
+	getInfoHorizontalBox.Append(closing, true)
+	getInfoHorizontalBox.Append(daemon, true)
+
 	daemon_height := ui.NewLabel("...")
-	daemonGroup.SetChild(daemon_height)
-	vbox.Append(daemonGroup, false)
-
-	dbGroup := ui.NewGroup("db_height")
-	daemonGroup.SetMargined(true)
 	db_height := ui.NewLabel("...")
-	dbGroup.SetChild(db_height)
-	vbox.Append(dbGroup, false)
+	getInfoHorizontalBox1.Append(daemon_height, true)
+	getInfoHorizontalBox1.Append(db_height, true)
+
+	errors := ui.NewLabel("...")
+	groups := ui.NewLabel("...")
+	getInfoHorizontalBox2.Append(errors, true)
+	getInfoHorizontalBox2.Append(groups, true)
+
+	logged := ui.NewLabel("...")
+	paused := ui.NewLabel("...")
+	getInfoHorizontalBox3.Append(logged, true)
+	getInfoHorizontalBox3.Append(paused, true)
+
+	daemonGroup := ui.NewGroup("getInfo")
+	daemonGroup.SetMargined(true)
+	daemonGroup.SetChild(getInfoVerticalBox)
+	topVerticalBox.Append(daemonGroup, false)
 
 	elexInfo := elexGetinfo{}
 
@@ -67,8 +101,14 @@ func serverTab() ui.Control {
 
 			json.Unmarshal(Getinfo(), &elexInfo)
 
-			daemon_height.SetText(strconv.Itoa(elexInfo.Daemon_height))
-			db_height.SetText(strconv.Itoa(elexInfo.Db_height))
+			closing.SetText("closing : " + strconv.Itoa(elexInfo.Closing))
+			daemon.SetText("daemon : " + elexInfo.Daemon)
+			daemon_height.SetText("daemon_height : " + strconv.Itoa(elexInfo.Daemon_height))
+			db_height.SetText("db_height : " + strconv.Itoa(elexInfo.Db_height))
+			errors.SetText("errors : " + strconv.Itoa(elexInfo.Errors))
+			groups.SetText("groups : " + strconv.Itoa(elexInfo.Groups))
+			logged.SetText("logged : " + strconv.Itoa(elexInfo.Logged))
+			paused.SetText("paused : " + strconv.Itoa(elexInfo.Paused))
 
 			go func() {
 				for {
@@ -87,10 +127,16 @@ func serverTab() ui.Control {
 			pingU.exit = 0
 			ipBtn.SetText("Connet")
 			pingBool = false
+			closing.SetText("...")
+			daemon.SetText("...")
 			daemon_height.SetText("...")
 			db_height.SetText("...")
+			errors.SetText("...")
+			groups.SetText("...")
+			logged.SetText("...")
+			paused.SetText("...")
 		}
 	})
 
-	return vbox
+	return topVerticalBox
 }
