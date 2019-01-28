@@ -13,9 +13,5 @@ func Start() {
 
 	go chanHandler()
 
-	boardLog.write("Starting to set andlabsUI")
-
 	ui.Main(gui)
-
-	boardLog.write("Exit andlabsUi")
 }

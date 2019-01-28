@@ -6,22 +6,22 @@ import (
 )
 
 type elexGetinfo struct {
-	Closing       int    `json:"closing"`
-	Daemon        string `json:"daemon"`
-	Daemon_height int    `json:"daemon_height"`
-	Db_height     int    `json:"db_height"`
-	Errors        int    `json:"errors"`
-	Groups        int    `json:"groups"`
-	Logged        int    `json:"logged"`
-	Paused        int    `json:"paused"`
+	Closing      int    `json:"closing"`
+	Daemon       string `json:"daemon"`
+	Daemonheight int    `json:"daemonheight"`
+	Dbheight     int    `json:"dbheight"`
+	Errors       int    `json:"errors"`
+	Groups       int    `json:"groups"`
+	Logged       int    `json:"logged"`
+	Paused       int    `json:"paused"`
 }
 
 func Getinfo() []byte {
 	jsonGetinfo, err := json.Marshal(elexGetinfo{
 		Closing:       1,
 		Daemon:        "192.168.0.2:8332/",
-		Daemon_height: 520527,
-		Db_height:     520527,
+		Daemonheight: 520527,
+		Dbheight:     520527,
 		Errors:        0,
 		Groups:        7,
 		Logged:        0,

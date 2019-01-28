@@ -6,7 +6,6 @@ import (
 )
 
 func gui() {
-	boardLog.write("Setting window GUI")
 	win := newWindow()
 
 	win.main = ui.NewWindow(win.title, win.width, win.height, win.hasMenubar)
@@ -32,6 +31,5 @@ func gui() {
 	//tab.Append("Log", logTab())
 	//tab.SetMargined(2, true)
 
-	boardLog.write("Start window show")
 	win.main.Show()
 }
