@@ -3,8 +3,6 @@ package _andlabsUI
 import (
 	"github.com/andlabs/ui"
 	"time"
-	"encoding/json"
-	"strconv"
 )
 
 func logTab() ui.Control {
@@ -83,24 +81,15 @@ func serverTab() ui.Control {
 
 	///
 
-	elexInfo := elexGetinfo{}
+	var pingU = pingUtil{"", pingStatus, pingMutex, 1,
+		electrumxLaber{
+			closing: infoClosing, daemon: infoDaemon, daemonHeight: infoDaemonHeight, dbHeight: infoDbHeight,
+			errors:  infoErrors, groups:infoGroups, logged: infoLogged, paused: infoPaused}}
 
-	var pingU = pingUtil{"", pingStatus, pingMutex, 1}
 	ipBtn.OnClicked(func(button *ui.Button) {
 		pingU.url = ipEntry.Text()
 		if !pingBool {
 			boardLog.write("Ping " + pingU.url)
-
-			json.Unmarshal(Getinfo(), &elexInfo)
-
-			infoClosing.SetText("Closing : " + strconv.Itoa(elexInfo.Closing))
-			infoDaemon.SetText("Daemon : " + elexInfo.Daemon)
-			infoDaemonHeight.SetText("DaemonHeight : " + strconv.Itoa(elexInfo.Daemonheight))
-			infoDbHeight.SetText("DB Height : " + strconv.Itoa(elexInfo.Dbheight))
-			infoErrors.SetText("Errors : " + strconv.Itoa(elexInfo.Errors))
-			infoGroups.SetText("Groups : " + strconv.Itoa(elexInfo.Groups))
-			infoLogged.SetText("Logged : " + strconv.Itoa(elexInfo.Logged))
-			infoPaused.SetText("Paused : " + strconv.Itoa(elexInfo.Paused))
 
 			go func() {
 				for {
@@ -110,7 +99,7 @@ func serverTab() ui.Control {
 						break
 					}
 					pingChan <- pingU
-					time.Sleep(time.Second * 3)
+					time.Sleep(time.Second * 10)
 				}
 			}()
 			ipBtn.SetText("Close")
@@ -120,14 +109,14 @@ func serverTab() ui.Control {
 			ipBtn.SetText("Connet")
 			pingBool = false
 
-			infoClosing.SetText("...")
-			infoDaemon.SetText("...")
-			infoDaemonHeight.SetText("...")
-			infoDbHeight.SetText("...")
-			infoErrors.SetText("...")
-			infoGroups.SetText("...")
-			infoLogged.SetText("...")
-			infoPaused.SetText("...")
+			pingU.elexLaber.closing.SetText("...")
+			pingU.elexLaber.daemon.SetText("...")
+			pingU.elexLaber.daemonHeight.SetText("...")
+			pingU.elexLaber.dbHeight.SetText("...")
+			pingU.elexLaber.errors.SetText("...")
+			pingU.elexLaber.groups.SetText("...")
+			pingU.elexLaber.logged.SetText("...")
+			pingU.elexLaber.paused.SetText("...")
 		}
 	})
 

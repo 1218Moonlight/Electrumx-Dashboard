@@ -10,6 +10,7 @@ type pingUtil struct {
 	laber *ui.Label
 	mutex *sync.Mutex
 	exit  int
+	elexLaber electrumxLaber
 }
 
 var pingChan = make(chan pingUtil)
@@ -20,7 +21,8 @@ func chanHandler() {
 		select {
 		case pingU := <-pingChan:
 			pingU.mutex.Lock()
-			serverPing(pingU)
+			serverPing(pingU.url, pingU.laber)
+			electrumxGetinfo(pingU.url, pingU.elexLaber)
 			pingU.mutex.Unlock()
 		}
 	}

@@ -4,12 +4,13 @@ import (
 	"github.com/sparrc/go-ping"
 	"time"
 	"log"
+	"github.com/andlabs/ui"
 )
 
 var pingBool bool = false
 
-func serverPing(pingU pingUtil) {
-	pinger, err := ping.NewPinger(pingU.url)
+func serverPing(url string, laber *ui.Label) {
+	pinger, err := ping.NewPinger(url)
 	pinger.SetPrivileged(true)
 	if err != nil {
 		panic(err)
@@ -20,9 +21,9 @@ func serverPing(pingU pingUtil) {
 	stats := pinger.Statistics()
 	if len(stats.Rtts) == 0 {
 		log.Println("Server false")
-		pingU.laber.SetText("Server false")
+		laber.SetText("Server false")
 	} else {
 		log.Println("Server true")
-		pingU.laber.SetText("Server true")
+		laber.SetText("Server true")
 	}
 }
