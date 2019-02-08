@@ -2,7 +2,6 @@ package _andlabsUI
 
 import (
 	"math/big"
-	"log"
 	"github.com/andlabs/ui"
 	"net/http"
 	"io/ioutil"
@@ -56,17 +55,20 @@ paused       *ui.Label
 func electrumxGetinfo(url string, elexLaber electrumxLaber) {
 	resp, err := http.Get(urlHttp+url+endPoint)
 	if err != nil {
-		log.Panic(err)
+		boardLog.write(err.Error())
+		return
 	}
 	defer resp.Body.Close()
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Panic(err)
+		boardLog.write(err.Error())
+		return
 	}
 	var info getinfo
 	err = json.Unmarshal(data, &info)
 	if err != nil {
-		log.Panic(err)
+		boardLog.write(err.Error())
+		return
 	}
 
 	elexLaber.closing.SetText("Closing : " + info.Result.Closing.String())

@@ -3,6 +3,7 @@ package _andlabsUI
 import (
 	"github.com/andlabs/ui"
 	"time"
+	"strings"
 )
 
 func logTab() ui.Control {
@@ -87,6 +88,10 @@ func serverTab() ui.Control {
 			errors:  infoErrors, groups:infoGroups, logged: infoLogged, paused: infoPaused}}
 
 	ipBtn.OnClicked(func(button *ui.Button) {
+		if strings.Contains(ipEntry.Text(), urlHttp){
+			boardLog.write("[err] Please do not enter http://")
+			return
+		}
 		pingU.url = ipEntry.Text()
 		if !pingBool {
 			boardLog.write("Ping " + pingU.url)
