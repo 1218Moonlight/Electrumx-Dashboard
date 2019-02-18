@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	urlHttp = "http://"
+	urlHttp  = "http://"
 	endPoint = "/getinfo"
 )
 
@@ -42,34 +42,25 @@ type getinfo struct {
 }
 
 type electrumxLaber struct {
-closing      *ui.Label
-daemon       *ui.Label
-daemonHeight *ui.Label
-dbHeight     *ui.Label
-errors       *ui.Label
-groups       *ui.Label
-logged       *ui.Label
-paused       *ui.Label
+	closing      *ui.Label
+	daemon       *ui.Label
+	daemonHeight *ui.Label
+	dbHeight     *ui.Label
+	errors       *ui.Label
+	groups       *ui.Label
+	logged       *ui.Label
+	paused       *ui.Label
 }
 
 func electrumxGetinfo(url string, elexLaber electrumxLaber) {
-	resp, err := http.Get(urlHttp+url+endPoint)
-	if err != nil {
-		boardLog.writeError(err.Error())
-		return
-	}
+	resp, err := http.Get(urlHttp + url + endPoint)
+	checkError(err)
 	defer resp.Body.Close()
 	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		boardLog.writeError(err.Error())
-		return
-	}
+	checkError(err)
 	var info getinfo
 	err = json.Unmarshal(data, &info)
-	if err != nil {
-		boardLog.writeError(err.Error())
-		return
-	}
+	checkError(err)
 
 	elexLaber.closing.SetText("Closing : " + info.Result.Closing.String())
 	elexLaber.daemon.SetText("Daemon : " + info.Result.Daemon)

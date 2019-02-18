@@ -20,14 +20,21 @@ func initLogger() (*os.File) {
 	return logFile
 }
 
-func (dLog boardLogger) writeInfo(sLog string) {
+func (dLog boardLogger) writeInfo(sLog interface{}) {
 	dLog.log.SetPrefix("[ INFO ] ")
 	dLog.log.Println(sLog)
 	log.Println(sLog)
 }
 
-func (dLog boardLogger) writeError(sLog string){
+func (dLog boardLogger) writeError(sLog interface{}) {
 	dLog.log.SetPrefix("[ ERROR ] ")
 	dLog.log.Println(sLog)
 	log.Println(sLog)
+}
+
+func checkError(e error) {
+	if e != nil {
+		boardLog.writeError(e.Error())
+		return
+	}
 }

@@ -85,10 +85,10 @@ func serverTab() ui.Control {
 	var pingU = pingUtil{"", pingStatus, pingMutex, 1,
 		electrumxLaber{
 			closing: infoClosing, daemon: infoDaemon, daemonHeight: infoDaemonHeight, dbHeight: infoDbHeight,
-			errors:  infoErrors, groups:infoGroups, logged: infoLogged, paused: infoPaused}}
+			errors:  infoErrors, groups: infoGroups, logged: infoLogged, paused: infoPaused}}
 
 	ipBtn.OnClicked(func(button *ui.Button) {
-		if strings.Contains(ipEntry.Text(), urlHttp){
+		if strings.Contains(ipEntry.Text(), urlHttp) {
 			boardLog.writeError("Please do not enter http://")
 			return
 		} else if ipEntry.Text() == "" {

@@ -12,9 +12,7 @@ var pingBool bool = false
 func serverPing(url string, laber *ui.Label) {
 	pinger, err := ping.NewPinger(url)
 	pinger.SetPrivileged(true)
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
 	pinger.Timeout = time.Duration(time.Second * 1)
 	pinger.Count = 1
 	pinger.Run()

@@ -6,10 +6,10 @@ import (
 )
 
 type pingUtil struct {
-	url   string
-	laber *ui.Label
-	mutex *sync.Mutex
-	exit  int
+	url       string
+	laber     *ui.Label
+	mutex     *sync.Mutex
+	exit      int
 	elexLaber electrumxLaber
 }
 

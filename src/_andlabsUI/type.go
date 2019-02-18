@@ -10,7 +10,7 @@ type window struct {
 	hasMenubar bool
 }
 
-func newWindow() window{
+func newWindow() window {
 	return window{
 		main:       nil,
 		title:      "Electrumx-Dashboard",
