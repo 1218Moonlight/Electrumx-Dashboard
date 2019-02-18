@@ -89,12 +89,15 @@ func serverTab() ui.Control {
 
 	ipBtn.OnClicked(func(button *ui.Button) {
 		if strings.Contains(ipEntry.Text(), urlHttp){
-			boardLog.write("[err] Please do not enter http://")
+			boardLog.writeError("Please do not enter http://")
+			return
+		} else if ipEntry.Text() == "" {
+			boardLog.writeError("Enter url")
 			return
 		}
 		pingU.url = ipEntry.Text()
 		if !pingBool {
-			boardLog.write("Ping " + pingU.url)
+			boardLog.writeInfo("Ping " + pingU.url)
 
 			go func() {
 				for {

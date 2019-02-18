@@ -55,19 +55,19 @@ paused       *ui.Label
 func electrumxGetinfo(url string, elexLaber electrumxLaber) {
 	resp, err := http.Get(urlHttp+url+endPoint)
 	if err != nil {
-		boardLog.write(err.Error())
+		boardLog.writeError(err.Error())
 		return
 	}
 	defer resp.Body.Close()
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		boardLog.write(err.Error())
+		boardLog.writeError(err.Error())
 		return
 	}
 	var info getinfo
 	err = json.Unmarshal(data, &info)
 	if err != nil {
-		boardLog.write(err.Error())
+		boardLog.writeError(err.Error())
 		return
 	}
 

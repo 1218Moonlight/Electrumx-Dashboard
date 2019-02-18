@@ -12,12 +12,12 @@ func gui() {
 
 	win.main.OnClosing(func(window *ui.Window) bool {
 		ui.Quit()
-		boardLog.write("OnClosing")
+		boardLog.writeInfo("OnClosing")
 		return true
 	})
 	ui.OnShouldQuit(func() bool {
 		win.main.Destroy()
-		boardLog.write("OnShouldQuit")
+		boardLog.writeInfo("OnShouldQuit")
 		return true
 	})
 
@@ -29,7 +29,7 @@ func gui() {
 	tab.SetMargined(0, true)
 
 	//tab.Append("Log", logTab())
-	//tab.SetMargined(2, true)
+	//tab.SetMargined(1, true)
 
 	win.main.Show()
 }

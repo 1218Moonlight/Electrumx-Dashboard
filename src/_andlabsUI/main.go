@@ -9,7 +9,7 @@ func Start() {
 	logFile := initLogger()
 	defer logFile.Close()
 
-	boardLog.write("Starting to chan")
+	boardLog.writeInfo("Starting to chan")
 
 	go chanHandler()
 

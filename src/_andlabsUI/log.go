@@ -16,11 +16,18 @@ func initLogger() (*os.File) {
 	if err != nil {
 		log.Panic(err)
 	}
-	boardLog.log = log.New(logFile, "INFO", log.Ldate|log.Ltime|log.Lshortfile)
+	boardLog.log = log.New(logFile, "", log.Ldate|log.Ltime|log.Lshortfile)
 	return logFile
 }
 
-func (dLog boardLogger) write(sLog string) {
+func (dLog boardLogger) writeInfo(sLog string) {
+	dLog.log.SetPrefix("[ INFO ] ")
+	dLog.log.Println(sLog)
+	log.Println(sLog)
+}
+
+func (dLog boardLogger) writeError(sLog string){
+	dLog.log.SetPrefix("[ ERROR ] ")
 	dLog.log.Println(sLog)
 	log.Println(sLog)
 }
