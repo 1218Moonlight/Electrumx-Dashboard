@@ -4,15 +4,25 @@ import (
 	"github.com/andlabs/ui"
 	"time"
 	"strings"
+	"io/ioutil"
 )
 
 func logTab() ui.Control {
 	vbox := ui.NewVerticalBox()
 	vbox.SetPadded(true)
 
+	logBtn := ui.NewButton("refresh")
+	vbox.Append(logBtn, false)
+
 	status := ui.NewMultilineEntry()
 	status.SetReadOnly(true)
 	vbox.Append(status, true)
+
+	logBtn.OnClicked(func(button *ui.Button) {
+		logFile, err := ioutil.ReadFile("log.txt")
+		checkError(err)
+		status.SetText(string(logFile))
+	})
 
 	return vbox
 }
