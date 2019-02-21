@@ -32,9 +32,10 @@ func (dLog boardLogger) writeError(sLog interface{}) {
 	log.Println(sLog)
 }
 
-func checkError(e error) {
+func checkError(e error) bool {
 	if e != nil {
 		boardLog.writeError(e.Error())
-		return
+		return true
 	}
+	return false
 }

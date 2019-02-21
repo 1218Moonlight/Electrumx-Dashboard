@@ -20,7 +20,7 @@ func logTab() ui.Control {
 
 	logBtn.OnClicked(func(button *ui.Button) {
 		logFile, err := ioutil.ReadFile("log.txt")
-		checkError(err)
+		if checkError(err) {return}
 		status.SetText(string(logFile))
 	})
 
