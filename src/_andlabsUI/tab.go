@@ -4,7 +4,6 @@ import (
 	"github.com/andlabs/ui"
 	"time"
 	"strings"
-	"io/ioutil"
 )
 
 func logTab() ui.Control {
@@ -18,8 +17,11 @@ func logTab() ui.Control {
 	status.SetReadOnly(true)
 	vbox.Append(status, true)
 
+	logFile, err := readFile("log.txt")
+	if !checkError(err, false) { status.SetText(string(logFile))}
+
 	logBtn.OnClicked(func(button *ui.Button) {
-		logFile, err := ioutil.ReadFile("log.txt")
+		logFile, err := readFile("log.txt")
 		if checkError(err, false) {return}
 		status.SetText(string(logFile))
 	})
