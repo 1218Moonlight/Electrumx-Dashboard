@@ -7,6 +7,12 @@ import (
 )
 
 func logTab() ui.Control {
+	forAppend := func(status *ui.MultilineEntry, logs []string) {
+		for i := range logs{
+			status.Append(logs[i]+"\n")
+		}
+	}
+
 	vbox := ui.NewVerticalBox()
 	vbox.SetPadded(true)
 
@@ -17,13 +23,16 @@ func logTab() ui.Control {
 	status.SetReadOnly(true)
 	vbox.Append(status, true)
 
-	logFile, err := readFile("log.txt")
-	if !checkError(err, false) { status.SetText(string(logFile))}
+	_, revert, err := readFile("log.txt")
+	if !checkError(err, false) {
+		forAppend(status, revert)
+	}
 
 	logBtn.OnClicked(func(button *ui.Button) {
-		logFile, err := readFile("log.txt")
+		origin, _, err := readFile("log.txt")
 		if checkError(err, false) {return}
-		status.SetText(string(logFile))
+		status.SetText("")
+		forAppend(status, origin)
 	})
 
 	return vbox
