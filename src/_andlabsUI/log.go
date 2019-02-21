@@ -11,13 +11,11 @@ type boardLogger struct {
 
 var boardLog = boardLogger{}
 
-func initLogger() (*os.File) {
+func initLogger() (*os.File, error) {
 	logFile, err := os.OpenFile("log.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Panic(err)
-	}
+	if checkError(err, true){return nil, err}
 	boardLog.log = log.New(logFile, "", log.Ldate|log.Ltime|log.Lshortfile)
-	return logFile
+	return logFile, nil
 }
 
 func (dLog boardLogger) writeInfo(sLog interface{}) {
@@ -32,9 +30,9 @@ func (dLog boardLogger) writeError(sLog interface{}) {
 	log.Println(sLog)
 }
 
-func checkError(e error) bool {
-	if e != nil {
-		boardLog.writeError(e.Error())
+func checkError(err error, notLog bool) bool {
+	if err != nil {
+		if !notLog {boardLog.writeError(err.Error())}
 		return true
 	}
 	return false

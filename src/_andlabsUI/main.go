@@ -6,8 +6,8 @@ import (
 )
 
 func Start() {
-	logFile := initLogger()
-	defer logFile.Close()
+	logFile, err := initLogger()
+	if !checkError(err, false){defer logFile.Close()}
 
 	boardLog.writeInfo("Starting to chan")
 

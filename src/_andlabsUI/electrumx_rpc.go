@@ -54,13 +54,13 @@ type electrumxLaber struct {
 
 func electrumxGetinfo(url string, elexLaber electrumxLaber) {
 	resp, err := http.Get(urlHttp + url + endPoint)
-	if checkError(err) {return}
+	if checkError(err,false) {return}
 	defer resp.Body.Close()
 	data, err := ioutil.ReadAll(resp.Body)
-	if checkError(err) {return}
+	if checkError(err, false) {return}
 	var info getinfo
 	err = json.Unmarshal(data, &info)
-	if checkError(err) {return}
+	if checkError(err, false) {return}
 
 	elexLaber.closing.SetText("Closing : " + info.Result.Closing.String())
 	elexLaber.daemon.SetText("Daemon : " + info.Result.Daemon)
