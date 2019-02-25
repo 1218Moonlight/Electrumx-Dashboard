@@ -8,8 +8,8 @@ import (
 
 func logTab() ui.Control {
 	forAppend := func(status *ui.MultilineEntry, logs []string) {
-		for i := range logs{
-			status.Append(logs[i]+"\n")
+		for i := range logs {
+			status.Append(logs[i] + "\n")
 		}
 	}
 
@@ -30,7 +30,9 @@ func logTab() ui.Control {
 
 	logBtn.OnClicked(func(button *ui.Button) {
 		origin, _, err := readFile("log.txt")
-		if checkError(err, false) {return}
+		if checkError(err, false) {
+			return
+		}
 		status.SetText("")
 		forAppend(status, origin)
 	})
@@ -72,41 +74,27 @@ func serverTab() ui.Control {
 
 	///
 
-	getInfoVBox := ui.NewVerticalBox()
-	getInfoHBox1 := ui.NewHorizontalBox()
-	getInfoHBox2 := ui.NewHorizontalBox()
-	getInfoVBox.Append(getInfoHBox1, false)
-	getInfoVBox.Append(getInfoHBox2, false)
-
-	infoClosing := ui.NewLabel("...")
-	infoDaemon := ui.NewLabel("...")
-	infoDaemonHeight := ui.NewLabel("...")
-	infoDbHeight := ui.NewLabel("...")
-	infoErrors := ui.NewLabel("...")
-	infoGroups := ui.NewLabel("...")
-	infoLogged := ui.NewLabel("...")
-	infoPaused := ui.NewLabel("...")
-
-	getInfoHBox1.Append(infoClosing, true)
-	getInfoHBox1.Append(infoDaemon, true)
-	getInfoHBox1.Append(infoDaemonHeight, true)
-	getInfoHBox1.Append(infoDbHeight, true)
-	getInfoHBox2.Append(infoErrors, true)
-	getInfoHBox2.Append(infoGroups, true)
-	getInfoHBox2.Append(infoLogged, true)
-	getInfoHBox2.Append(infoPaused, true)
+	getinfoLabel := ui.NewLabel("")
 
 	getInfoGroup := ui.NewGroup("getInfo")
 	getInfoGroup.SetMargined(true)
-	getInfoGroup.SetChild(getInfoVBox)
+	getInfoGroup.SetChild(getinfoLabel)
 	topVbox.Append(getInfoGroup, false)
+
+	///
+
+	sessionsLavel := ui.NewLabel("")
+
+	sessionsGroup := ui.NewGroup("sessions")
+	sessionsGroup.SetMargined(true)
+	sessionsGroup.SetChild(sessionsLavel)
+	topVbox.Append(sessionsGroup, false)
 
 	///
 
 	var pingU = pingUtil{"", pingStatus, pingMutex, 1,
 		electrumxLaber{
-			closing: infoClosing, daemon: infoDaemon, daemonHeight: infoDaemonHeight, dbHeight: infoDbHeight,
-			errors:  infoErrors, groups: infoGroups, logged: infoLogged, paused: infoPaused}}
+			getinfo: getinfoLabel, sessions: sessionsLavel}}
 
 	ipBtn.OnClicked(func(button *ui.Button) {
 		if strings.Contains(ipEntry.Text(), urlHttp) {
@@ -138,14 +126,8 @@ func serverTab() ui.Control {
 			ipBtn.SetText("Connet")
 			pingBool = false
 
-			pingU.elexLaber.closing.SetText("...")
-			pingU.elexLaber.daemon.SetText("...")
-			pingU.elexLaber.daemonHeight.SetText("...")
-			pingU.elexLaber.dbHeight.SetText("...")
-			pingU.elexLaber.errors.SetText("...")
-			pingU.elexLaber.groups.SetText("...")
-			pingU.elexLaber.logged.SetText("...")
-			pingU.elexLaber.paused.SetText("...")
+			pingU.elexLaber.getinfo.SetText("")
+			pingU.elexLaber.sessions.SetText("")
 		}
 	})
 

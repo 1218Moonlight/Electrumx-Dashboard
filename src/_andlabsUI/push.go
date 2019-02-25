@@ -3,7 +3,6 @@ package _andlabsUI
 import (
 	"github.com/sparrc/go-ping"
 	"time"
-	"log"
 	"github.com/andlabs/ui"
 )
 
@@ -18,10 +17,10 @@ func serverPing(url string, laber *ui.Label) {
 	pinger.Run()
 	stats := pinger.Statistics()
 	if len(stats.Rtts) == 0 {
-		log.Println("Server false")
+		boardLog.writeInfo("Server false")
 		laber.SetText("Server false")
 	} else {
-		log.Println("Server true")
+		boardLog.writeInfo("Server true")
 		laber.SetText("Server true")
 	}
 }

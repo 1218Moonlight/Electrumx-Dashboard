@@ -14,7 +14,7 @@ var boardLog = boardLogger{}
 func initLogger() (*os.File, error) {
 	logFile, err := os.OpenFile("log.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if checkError(err, true){return nil, err}
-	boardLog.log = log.New(logFile, "", log.Ldate|log.Ltime|log.Lshortfile)
+	boardLog.log = log.New(logFile, "", log.Ldate|log.Ltime)
 	return logFile, nil
 }
 

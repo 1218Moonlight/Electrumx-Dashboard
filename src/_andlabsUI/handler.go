@@ -22,7 +22,8 @@ func chanHandler() {
 		case pingU := <-pingChan:
 			pingU.mutex.Lock()
 			serverPing(pingU.url, pingU.laber)
-			electrumxGetinfo(pingU.url, pingU.elexLaber)
+			electrumxGetinfo(pingU.url, pingU.elexLaber.getinfo)
+			electrumxSessions(pingU.url, pingU.elexLaber.sessions)
 			pingU.mutex.Unlock()
 		}
 	}

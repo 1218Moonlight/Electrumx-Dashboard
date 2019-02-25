@@ -5,12 +5,12 @@ import (
 	"github.com/andlabs/ui"
 	"net/http"
 	"io/ioutil"
-	"encoding/json"
 )
 
 const (
-	urlHttp  = "http://"
-	endPoint = "/getinfo"
+	urlHttp          = "http://"
+	endPointGetinfo  = "/getinfo"
+	endPointSessions = "/sessions"
 )
 
 type getinfo struct {
@@ -42,32 +42,40 @@ type getinfo struct {
 }
 
 type electrumxLaber struct {
-	closing      *ui.Label
-	daemon       *ui.Label
-	daemonHeight *ui.Label
-	dbHeight     *ui.Label
-	errors       *ui.Label
-	groups       *ui.Label
-	logged       *ui.Label
-	paused       *ui.Label
+	getinfo  *ui.Label
+	sessions *ui.Label
 }
 
-func electrumxGetinfo(url string, elexLaber electrumxLaber) {
-	resp, err := http.Get(urlHttp + url + endPoint)
-	if checkError(err,false) {return}
+func electrumxGetinfo(url string, getinfoLabel *ui.Label) {
+	resp, err := http.Get(urlHttp + url + endPointGetinfo)
+	if checkError(err, false) {
+		return
+	}
 	defer resp.Body.Close()
 	data, err := ioutil.ReadAll(resp.Body)
-	if checkError(err, false) {return}
-	var info getinfo
-	err = json.Unmarshal(data, &info)
-	if checkError(err, false) {return}
+	if checkError(err, false) {
+		return
+	}
+	if checkError(err, false) {
+		return
+	}
 
-	elexLaber.closing.SetText("Closing : " + info.Result.Closing.String())
-	elexLaber.daemon.SetText("Daemon : " + info.Result.Daemon)
-	elexLaber.daemonHeight.SetText("DaemonHeight : " + info.Result.Daemon_height.String())
-	elexLaber.dbHeight.SetText("DB Height : " + info.Result.Db_height.String())
-	elexLaber.errors.SetText("Errors : " + info.Result.Errors.String())
-	elexLaber.groups.SetText("Groups : " + info.Result.Groups.String())
-	elexLaber.logged.SetText("Logged : " + info.Result.Logged.String())
-	elexLaber.paused.SetText("Paused : " + info.Result.Paused.String())
+	getinfoLabel.SetText(string(data))
+}
+
+func electrumxSessions(url string, sessionsLabel *ui.Label) {
+	resp, err := http.Get(urlHttp + url + endPointSessions)
+	if checkError(err, false) {
+		return
+	}
+	defer resp.Body.Close()
+	data, err := ioutil.ReadAll(resp.Body)
+	if checkError(err, false) {
+		return
+	}
+	if checkError(err, false) {
+		return
+	}
+
+	sessionsLabel.SetText(string(data))
 }
